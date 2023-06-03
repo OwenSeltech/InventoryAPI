@@ -28,7 +28,7 @@ namespace InventoryAPI.Controllers
 			if (!response.IsSuccess) return BadRequest(response.Message);
 			else return NoContent();
 		}
-		[HttpPost("deleteProduct/productId")]
+		[HttpPost("deleteProduct/{productId}")]
 		public async Task<ActionResult<ResponseDto>> DeleteProduct(int productId)
 		{
 			var response = await _productService.DeleteProduct(productId);
@@ -43,7 +43,7 @@ namespace InventoryAPI.Controllers
 			return Ok(response);
 		}
 
-		[HttpGet("productId")]
+		[HttpGet("{productId}")]
 		public async Task<ActionResult<Product>> GetProduct(int productId)
 		{
 			var response = await _productService.GetProductById(productId);
