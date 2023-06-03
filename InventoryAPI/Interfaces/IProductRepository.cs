@@ -1,9 +1,8 @@
 ﻿using InventoryAPI.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace InventoryAPI.Interfaces
 {
-	public interface IProductRepository
+    public interface IProductRepository
 	{
 		Task<bool> AddProductAsync(Product product);
 		Task<bool> UpdateProductAsync(Product product);

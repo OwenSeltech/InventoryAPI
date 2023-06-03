@@ -7,7 +7,8 @@ namespace InventoryAPI.Entities
 		public int InvoiceID { get; set; }
 		public int CustomerID { get; set; }
 		public int ProductID { get; set; }
-		public decimal InvoiceAmount { get; set; }
+        public int ItemsNo { get; set; }
+        public decimal InvoiceAmount { get; set; }
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime DateAdded { get; set; }
 		public bool IsDeleted { get; set; } = false;

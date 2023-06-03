@@ -8,7 +8,8 @@ namespace InventoryAPI.Entities
 		public string CustomerFirstName { get; set; }
 		public string CustomerLastName { get; set; }
 		public string CustomerAddress { get; set; }
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public string CustomerEmailAddress { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public DateTime DateAdded { get; set; }
 		public bool IsDeleted { get; set; } = false;
 		public DateTime? DateDeleted { get; set; }

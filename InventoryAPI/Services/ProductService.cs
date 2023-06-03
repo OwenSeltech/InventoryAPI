@@ -9,7 +9,6 @@ namespace InventoryAPI.Services
 	{
 		private readonly IProductRepository _productRepository;
 		private readonly IMapper _mapper;
-
 		public ProductService(IProductRepository productRepository, IMapper mapper)
 		{
 			_mapper = mapper;

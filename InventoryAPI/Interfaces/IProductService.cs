@@ -1,10 +1,9 @@
-﻿using InventoryAPI.Data.Repositories;
-using InventoryAPI.DTOs;
+﻿using InventoryAPI.DTOs;
 using InventoryAPI.Entities;
 
 namespace InventoryAPI.Interfaces
 {
-	public interface IProductService
+    public interface IProductService
 	{
 		Task<ResponseDto> AddProduct(ProductRequestDto productRequestDto);
 		Task<ResponseDto> EditProduct(ProductRequestDto productRequestDto);

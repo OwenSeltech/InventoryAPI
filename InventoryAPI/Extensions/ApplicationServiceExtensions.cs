@@ -12,9 +12,13 @@ namespace InventoryAPI.Extensions
 		public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
 		{
 			services.AddScoped<IProductService, ProductService>();
-			services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<IInvoiceService, InvoiceService>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 
-			services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
 			var connectionString = config.GetConnectionString("DefaultConnection");
 			services.AddDbContextFactory<DataContext>(options => options.UseSqlServer(
 				connectionString, sqlServerOptionsAction: sqlOptions =>

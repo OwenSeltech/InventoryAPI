@@ -1,12 +1,11 @@
 ﻿using InventoryAPI.DTOs;
 using InventoryAPI.Entities;
 using InventoryAPI.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAPI.Controllers
 {
-	public class ProductController : BaseApiController
+    public class ProductController : BaseApiController
 	{
 		private readonly IProductService _productService;
 		public ProductController(IProductService productService)
