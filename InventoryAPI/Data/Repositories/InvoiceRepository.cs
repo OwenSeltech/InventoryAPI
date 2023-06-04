@@ -1,7 +1,6 @@
 ﻿using InventoryAPI.Entities;
 using InventoryAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace InventoryAPI.Data.Repositories
 {

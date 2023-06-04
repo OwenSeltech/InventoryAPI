@@ -1,7 +1,6 @@
 ﻿using InventoryAPI.DTOs;
 using InventoryAPI.Entities;
 using InventoryAPI.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryAPI.Controllers

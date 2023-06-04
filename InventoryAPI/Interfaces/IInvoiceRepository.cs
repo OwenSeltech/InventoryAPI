@@ -1,5 +1,4 @@
-﻿using InventoryAPI.DTOs;
-using InventoryAPI.Entities;
+﻿using InventoryAPI.Entities;
 
 namespace InventoryAPI.Interfaces
 {
