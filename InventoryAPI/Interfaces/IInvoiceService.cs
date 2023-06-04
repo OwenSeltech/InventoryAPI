@@ -10,5 +10,6 @@ namespace InventoryAPI.Interfaces
         Task<IEnumerable<Invoice>> GetAllInvoices();
         Task<Invoice> GetInvoiceById(int Id);
         Task<ResponseDto> DeleteInvoice(int InvoiceId);
+        Task<IEnumerable<Invoice>> GetInvoicesByCustomerId(int id);
     }
 }

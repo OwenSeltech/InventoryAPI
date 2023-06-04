@@ -9,6 +9,8 @@ namespace InventoryAPI.Interfaces
         Task<bool> UpdateInvoiceAsync(Invoice Invoice);
         Task<IEnumerable<Invoice>> GetAllInvoicesAsync();
         Task<Invoice> GetInvoiceByIdAsync(int id);
-        
+        Task<IEnumerable<Invoice>> GetInvoicesByCustomerIdAsync(int id);
+
+
     }
 }

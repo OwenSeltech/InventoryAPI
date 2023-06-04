@@ -14,6 +14,10 @@ namespace InventoryAPI.Helpers
                 .ForMember(x => x.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
             CreateMap<InvoiceRequestDto, Invoice>()
                 .ForMember(x => x.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<QuotationRequestDto, Quotation>()
+               .ForMember(x => x.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
+            CreateMap<CreditNoteRequestDto, CreditNote>()
+              .ForMember(x => x.DateAdded, opt => opt.MapFrom(src => DateTime.Now));
 
         }
 	}

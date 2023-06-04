@@ -49,5 +49,11 @@ namespace InventoryAPI.Controllers
             var response = await _invoiceService.GetInvoiceById(invoiceId);
             return Ok(response);
         }
+        [HttpGet("getInvoicesByCustomer/{customerId}")]
+        public async Task<ActionResult<Invoice>> GetInvoicesByCustomerId(int customerId)
+        {
+            var response = await _invoiceService.GetInvoicesByCustomerId(customerId);
+            return Ok(response);
+        }
     }
 }

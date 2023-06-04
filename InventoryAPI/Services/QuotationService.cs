@@ -5,83 +5,26 @@ using InventoryAPI.Interfaces;
 
 namespace InventoryAPI.Services
 {
-    public class InvoiceService : IInvoiceService
+    public class QuotationService : IQuotationService
     {
-        private readonly IInvoiceRepository _invoiceRepository;
+        private readonly IQuotationRepository _quotationRepository;
         private readonly ICustomerRepository _customerRepository;
         private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
-        public InvoiceService(IInvoiceRepository invoiceRepository, IMapper mapper, ICustomerRepository customerRepository, IProductRepository productRepository)
+        public QuotationService(IQuotationRepository quotationRepository, IMapper mapper, ICustomerRepository customerRepository, IProductRepository productRepository)
         {
             _mapper = mapper;
-            _invoiceRepository = invoiceRepository;
+            _quotationRepository = quotationRepository;
             _customerRepository = customerRepository;
             _productRepository = productRepository;
         }
 
-        public async Task<ResponseDto> AddInvoice(InvoiceRequestDto invoiceRequestDto)
+        public async Task<ResponseDto> AddQuotation(QuotationRequestDto quotationRequestDto)
         {
             var responseDto = new ResponseDto();
-            var invoice = new Invoice();
+            var quotation = new Quotation();
 
-            var cust = await _customerRepository.GetCustomerByIdAsync(invoiceRequestDto.CustomerID);
-            if(cust == null) 
-            {
-                responseDto = new ResponseDto();
-                responseDto.IsSuccess = false;
-                responseDto.Message = "Customer Not Found";
-                return responseDto;
-            }
-            var product = await _productRepository.GetProductByIdAsync(invoiceRequestDto.ProductID);
-            if (product == null)
-            {
-                responseDto = new ResponseDto();
-                responseDto.IsSuccess = false;
-                responseDto.Message = "Product Not Found";
-                return responseDto;
-            }
-            if (invoiceRequestDto.ItemsNo < 0)
-            {
-                responseDto = new ResponseDto();
-                responseDto.IsSuccess = false;
-                responseDto.Message = "Number of Items Must Be Greater than 0";
-                return responseDto;
-            }
-
-            invoiceRequestDto.Product = product;
-            invoiceRequestDto.Customer = cust;
-            invoiceRequestDto.InvoiceAmount = product.Price * invoiceRequestDto.ItemsNo;
-            _mapper.Map(invoiceRequestDto, invoice);
-            if (await _invoiceRepository.AddInvoiceAsync(invoice))
-            {
-                responseDto = new ResponseDto();
-                responseDto.IsSuccess = true;
-                responseDto.Message = "Invoice added successfully";
-                return responseDto;
-            }
-
-            responseDto = new ResponseDto();
-            responseDto.IsSuccess = false;
-            responseDto.Message = "Failed to add Invoice";
-            return responseDto;
-
-        }
-
-        public async Task<ResponseDto> EditInvoice(InvoiceRequestDto invoiceRequestDto)
-        {
-            var responseDto = new ResponseDto();
-            var invoice = new Invoice();
-
-            var invoiceResponse = await _invoiceRepository.GetInvoiceByIdAsync(invoiceRequestDto.InvoiceID);
-            if (invoiceResponse == null)
-            {
-                responseDto = new ResponseDto();
-                responseDto.IsSuccess = false;
-                responseDto.Message = "Invoice Does Not Exist";
-                return responseDto;
-            }
-
-            var cust = await _customerRepository.GetCustomerByIdAsync(invoiceRequestDto.CustomerID);
+            var cust = await _customerRepository.GetCustomerByIdAsync(quotationRequestDto.CustomerID);
             if (cust == null)
             {
                 responseDto = new ResponseDto();
@@ -89,7 +32,7 @@ namespace InventoryAPI.Services
                 responseDto.Message = "Customer Not Found";
                 return responseDto;
             }
-            var product = await _productRepository.GetProductByIdAsync(invoiceRequestDto.ProductID);
+            var product = await _productRepository.GetProductByIdAsync(quotationRequestDto.ProductID);
             if (product == null)
             {
                 responseDto = new ResponseDto();
@@ -97,7 +40,7 @@ namespace InventoryAPI.Services
                 responseDto.Message = "Product Not Found";
                 return responseDto;
             }
-            if (invoiceRequestDto.ItemsNo < 0)
+            if (quotationRequestDto.ItemsNo < 0)
             {
                 responseDto = new ResponseDto();
                 responseDto.IsSuccess = false;
@@ -105,71 +48,122 @@ namespace InventoryAPI.Services
                 return responseDto;
             }
 
-            invoiceRequestDto.Product = product;
-            invoiceRequestDto.Customer = cust;
-            invoiceRequestDto.InvoiceAmount = product.Price * invoiceRequestDto.ItemsNo;
-            _mapper.Map(invoiceRequestDto, invoice);
-            if (await _invoiceRepository.UpdateInvoiceAsync(invoice))
+            quotationRequestDto.Product = product;
+            quotationRequestDto.Customer = cust;
+            quotationRequestDto.QuotationAmount = product.Price * quotationRequestDto.ItemsNo;
+            _mapper.Map(quotationRequestDto, quotation);
+            if (await _quotationRepository.AddQuotationAsync(quotation))
             {
                 responseDto = new ResponseDto();
                 responseDto.IsSuccess = true;
-                responseDto.Message = "Invoice edited successfully";
+                responseDto.Message = "Quotation added successfully";
                 return responseDto;
             }
 
             responseDto = new ResponseDto();
             responseDto.IsSuccess = false;
-            responseDto.Message = "Failed to edit Invoice";
+            responseDto.Message = "Failed to add Quotation";
             return responseDto;
 
         }
 
-        public async Task<ResponseDto> DeleteInvoice(int invoiceId)
+        public async Task<ResponseDto> EditQuotation(QuotationRequestDto quotationRequestDto)
         {
             var responseDto = new ResponseDto();
+            var quotation = new Quotation();
 
-            var invoice = await _invoiceRepository.GetInvoiceByIdAsync(invoiceId);
-            if (invoice == null)
+            var quotationResponse = await _quotationRepository.GetQuotationByIdAsync(quotationRequestDto.QuotationID);
+            if (quotationResponse == null)
             {
                 responseDto = new ResponseDto();
                 responseDto.IsSuccess = false;
-                responseDto.Message = "Invoice Does Not Exist";
+                responseDto.Message = "Quotation Does Not Exist";
                 return responseDto;
             }
 
-            invoice.IsDeleted = true;
-            invoice.DateDeleted = DateTime.Now;
+            var cust = await _customerRepository.GetCustomerByIdAsync(quotationRequestDto.CustomerID);
+            if (cust == null)
+            {
+                responseDto = new ResponseDto();
+                responseDto.IsSuccess = false;
+                responseDto.Message = "Customer Not Found";
+                return responseDto;
+            }
+            var product = await _productRepository.GetProductByIdAsync(quotationRequestDto.ProductID);
+            if (product == null)
+            {
+                responseDto = new ResponseDto();
+                responseDto.IsSuccess = false;
+                responseDto.Message = "Product Not Found";
+                return responseDto;
+            }
+            if (quotationRequestDto.ItemsNo < 0)
+            {
+                responseDto = new ResponseDto();
+                responseDto.IsSuccess = false;
+                responseDto.Message = "Number of Items Must Be Greater than 0";
+                return responseDto;
+            }
 
-            if (await _invoiceRepository.UpdateInvoiceAsync(invoice))
+            quotationRequestDto.Product = product;
+            quotationRequestDto.Customer = cust;
+            quotationRequestDto.QuotationAmount = product.Price * quotationRequestDto.ItemsNo;
+            _mapper.Map(quotationRequestDto, quotation);
+            if (await _quotationRepository.UpdateQuotationAsync(quotation))
             {
                 responseDto = new ResponseDto();
                 responseDto.IsSuccess = true;
-                responseDto.Message = "Invoice deleted successfully";
+                responseDto.Message = "Quotation edited successfully";
                 return responseDto;
             }
 
             responseDto = new ResponseDto();
             responseDto.IsSuccess = false;
-            responseDto.Message = "Failed to delete Invoice";
+            responseDto.Message = "Failed to edit Quotation";
             return responseDto;
 
         }
 
-        public async Task<IEnumerable<Invoice>> GetAllInvoices()
+        public async Task<ResponseDto> DeleteQuotation(int quotationId)
         {
-            var invoices = await _invoiceRepository.GetAllInvoicesAsync();
-            return invoices;
-        }
-        public async Task<Invoice> GetInvoiceById(int Id)
-        {
-            var invoice = await _invoiceRepository.GetInvoiceByIdAsync(Id);
-            return invoice;
-        }
-        public async Task<IEnumerable<Invoice>> GetInvoicesByCustomerId(int id)
-        {
-            var invoices = await _invoiceRepository.GetInvoicesByCustomerIdAsync(id);
-            return invoices;
+            var responseDto = new ResponseDto();
+
+            var quotation = await _quotationRepository.GetQuotationByIdAsync(quotationId);
+            if (quotation == null)
+            {
+                responseDto = new ResponseDto();
+                responseDto.IsSuccess = false;
+                responseDto.Message = "Quotation Does Not Exist";
+                return responseDto;
+            }
+
+            quotation.IsDeleted = true;
+            quotation.DateDeleted = DateTime.Now;
+
+            if (await _quotationRepository.UpdateQuotationAsync(quotation))
+            {
+                responseDto = new ResponseDto();
+                responseDto.IsSuccess = true;
+                responseDto.Message = "Quotation deleted successfully";
+                return responseDto;
+            }
+
+            responseDto = new ResponseDto();
+            responseDto.IsSuccess = false;
+            responseDto.Message = "Failed to delete Quotation";
+            return responseDto;
+
         }
 
+        public async Task<IEnumerable<Quotation>> GetAllQuotations()
+        {
+            var quotations = await _quotationRepository.GetAllQuotationsAsync();
+            return quotations;
+        }
+        public async Task<Quotation> GetQuotationById(int Id)
+        {
+            var quotation = await _quotationRepository.GetQuotationByIdAsync(Id);
+            return quotation;
+        }
     }
 }

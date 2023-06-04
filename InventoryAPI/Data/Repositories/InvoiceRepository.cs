@@ -1,6 +1,7 @@
 ﻿using InventoryAPI.Entities;
 using InventoryAPI.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace InventoryAPI.Data.Repositories
 {
@@ -41,6 +42,16 @@ namespace InventoryAPI.Data.Repositories
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
-       
+        public async Task<IEnumerable<Invoice>> GetInvoicesByCustomerIdAsync(int id)
+        {
+            return await _context.Invoices
+                .Include(x => x.Customer)
+                .Include(x => x.Product)
+                .Where(x => x.CustomerID == id)
+                .Where(x => x.IsDeleted == false)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
     }
 }

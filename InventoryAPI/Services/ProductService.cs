@@ -26,7 +26,15 @@ namespace InventoryAPI.Services
 				return responseDto;
 			}
 
-			var product = new Product();
+            if (productRequestDto.Price < 0)
+            {
+                responseDto = new ResponseDto();
+                responseDto.IsSuccess = false;
+                responseDto.Message = "Price Should be greater than Zero";
+                return responseDto;
+            }
+
+            var product = new Product();
 			_mapper.Map(productRequestDto, product);
 			if (await _productRepository.AddProductAsync(product))
 			{

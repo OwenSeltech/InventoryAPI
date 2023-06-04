@@ -7,7 +7,8 @@ namespace InventoryAPI.Entities
 		public int QuotationID { get; set; }
 		public int CustomerID { get; set; }
 		public int ProductID { get; set; }
-		public decimal QuotationAmount { get; set; }
+        public int ItemsNo { get; set; }
+        public decimal QuotationAmount { get; set; }
 
 		public Customer Customer { get; set; }
 		public Product Product { get; set; }
